@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="elasticsearch_connector.JsonViewerWidget">
+        <div class="o_field_json_viewer" 
+             style="width: 100%; 
+                    min-height: 600px; 
+                    max-height: 1000px; 
+                    display: flex; 
+                    flex-direction: column;">
+            <textarea 
+                class="form-control o_input" 
+                style="flex-grow: 1; 
+                       min-height: 600px; 
+                       max-height: 1000px; 
+                       resize: vertical; 
+                       font-family: monospace; 
+                       white-space: pre-wrap; 
+                       overflow: auto;"
+                t-att-readonly="props.readonly ? 'readonly' : ''"
+                t-on-change="onJsonChange"
+                t-esc="formattedJson"
+            />
+        </div>
+    </t>
+</templates>

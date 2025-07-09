@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="elasticsearch_config_tree_view" model="ir.ui.view">
+        <field name="name">elasticsearch.config.tree</field>
+        <field name="model">elasticsearch.config</field>
+        <field name="arch" type="xml">
+            <tree string="Elasticsearch Configurations">
+                <field name="name"/>
+                <field name="host"/>
+                <field name="port"/>
+                <field name="use_ssl"/>
+                <field name="index_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="elasticsearch_config_form_view" model="ir.ui.view">
+        <field name="name">elasticsearch.config.form</field>
+        <field name="model">elasticsearch.config</field>
+        <field name="arch" type="xml">
+            <form string="Elasticsearch Configuration">
+                <header>
+                    <button type="object" 
+                            name="test_elasticsearch_connection"
+                            class="btn btn-info"
+                            string="Test Connection"
+                            icon="fa-check-circle-o"
+                    />
+                    <field  name="state"
+                            widget="statusbar" statusbar_visible="disconnected, connected"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    <button name="toggle_state" type="object" class="text-danger" icon="fa-chain-broken" invisible="state == 'disconnected'" help="Force disconnect from the Elasticsearch server">
+                        Disconnect
+                    </button>
+                    </div>
+
+                    <div class="oe_title">
+                    <h1>
+                        <field name="name" placeholder="Elastic Connection"/>
+                    </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="host"/>
+                            <field name="port"/>
+                            <field name="index_name"/>
+                        </group>
+                        <group>
+                            <field name="username"/>
+                            <field name="password"/>
+                            <field name="use_ssl"/>
+                            <field name="verify_ssl"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="elasticsearch_config_action" model="ir.actions.act_window">
+        <field name="name">Elasticsearch Servers</field>
+        <field name="res_model">elasticsearch.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="elasticsearch_config_tree_view"/>
+    </record>
+
+    <menuitem 
+        id="elasticsearch_root_menu" 
+        name="Elasticsearch" 
+        sequence="100"/>
+
+    <menuitem 
+        id="elasticsearch_config_menu" 
+        name="Configuration" 
+        parent="elasticsearch_root_menu" 
+        sequence="10"/>
+    
+    <!-- Elasticsearch Servers Submenu -->
+    <menuitem 
+        id="elasticsearch_config_submenu" 
+        name="Elasticsearch Servers" 
+        parent="elasticsearch_config_menu" 
+        action="elasticsearch_config_action"
+        sequence="10"/>
+
+</odoo>

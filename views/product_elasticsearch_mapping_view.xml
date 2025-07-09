@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_elasticsearch_mapping_form_view" model="ir.ui.view">
+        <field name="name">product.elasticsearch.mapping.form</field>
+        <field name="model">product.elasticsearch.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Elasticsearch Index Mapping">
+                <header>
+                    <button name="create_elasticsearch_index_and_mapping" 
+                            string="Create Index" 
+                            type="object" 
+                            class="btn-primary oe_highlight oe_view_mode_only"
+                            invisible="index_created == True"
+                    />
+                    <button name="delete_elasticsearch_index" 
+                            string="Delete Index" 
+                            type="object" 
+                            class="btn-danger"
+                            invisible="index_created == False"
+                            confirm="Are you sure you want to Delete this index and all of its content?"
+                    />
+                    <button name="index_all_products" 
+                            string="Index All Products" 
+                            type="object" 
+                            class="btn-secondary"
+                            invisible="index_created == False"
+                    />
+                    <field name="index_created" invisible="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="config_id"/>
+                            <field name="model"/>
+                            <field name="index_name" readonly="index_created == True"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Index Mapping">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <field name="index_mapping"
+                                            widget="json_viewer"
+                                            readonly="index_created == True"
+                                            class="o_field_widget o_field_text form-control"
+                                            style="min-height: 600px; 
+                                                    max-height: 1000px; 
+                                                    overflow-y: auto; 
+                                                    white-space: pre-wrap;"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button name="index_mapping_reset_default"
+                                            string="Reset Default"
+                                            type="object"
+                                            class="btn btn-secondary"
+                                            confirm="Are you sure you want to reset this field to default values?"
+                                            readonly="index_created == True"
+                                    />
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Indexing Domain">
+                            <group>
+                                <field name="indexing_domain"
+                                    widget="domain"
+                                    options="{'model': 'model'}"
+                                />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_elasticsearch_mapping_action" model="ir.actions.act_window">
+        <field name="name">Product Elasticsearch Mappings</field>
+        <field name="res_model">product.elasticsearch.mapping</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="product_elasticsearch_mapping_submenu" 
+              name="Product Mappings" 
+              parent="elasticsearch_config_menu" 
+              action="product_elasticsearch_mapping_action"
+              sequence="20"/>
+
+</odoo>
